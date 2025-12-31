@@ -24,3 +24,16 @@ export async function sendMessageApi(
 
   return res.json();
 }
+
+export async function fetchChatHistory(sessionId: string) {
+  const res = await fetch(
+    `${API_BASE_URL}/chat/history/${sessionId}`
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch history");
+  }
+
+  const data = await res.json();
+  return data.messages;
+}

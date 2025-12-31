@@ -4,7 +4,7 @@ import ChatInput from "./ChatInput";
 import TypingIndicator from "./TypingIndicator";
 
 export default function ChatWindow() {
-  const { messages, loading, error, sendMessage } = useChat();
+  const { messages, loading, error, sendMessage, isLoadingHistory } = useChat();
 
   return (
     <div className="w-full max-w-md h-150 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden">
@@ -15,14 +15,18 @@ export default function ChatWindow() {
         </p>
       </div>
 
-      <MessageList messages={messages} />
+      {isLoadingHistory ? (
+        <div className="flex-1 flex items-center justify-center text-sm text-gray-400">
+          Loading conversation…
+        </div>
+      ) : (
+        <MessageList messages={messages} />
+      )}
 
       {loading && <TypingIndicator />}
 
       {error && (
-        <div className="px-4 py-2 text-sm text-red-600 bg-red-50">
-          {error}
-        </div>
+        <div className="px-4 py-2 text-sm text-red-600 bg-red-50">{error}</div>
       )}
 
       <ChatInput onSend={sendMessage} disabled={loading} />

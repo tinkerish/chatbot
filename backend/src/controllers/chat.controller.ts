@@ -40,3 +40,22 @@ export async function postChatMessage(req: Request, res: Response) {
     });
   }
 }
+
+export async function getChatHistory(req: Request, res: Response) {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      return res.status(400).json({ error: "sessionId is required" });
+    }
+
+    const messages = await getConversationHistory(sessionId);
+
+    return res.json({ messages });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      error: "Failed to load chat history",
+    });
+  }
+}
